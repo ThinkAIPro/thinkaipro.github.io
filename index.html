@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ThinkAI Pro — Tutoriais de IA local, Termux, automação e tecnologia acessível no Android." />
+  <meta property="og:title" content="ThinkAI Pro" />
+  <meta property="og:description" content="IA local, Termux, automação — tecnologia de verdade, sem complicação." />
+  <meta property="og:type" content="website" />
+  <title>ThinkAI Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── TOKENS ─────────────────────────────────────── */
+    :root {
+      --bg:       #0D0F14;
+      --surface:  #13161F;
+      --card:     #1A1D27;
+      --border:   #252836;
+      --accent:   #6C63FF;
+      --accent2:  #A78BFA;
+      --green:    #25D366;   /* WhatsApp green */
+      --green2:   #4ECCA3;
+      --text:     #E8E8F0;
+      --muted:    #6B6F84;
+      --radius:   14px;
+      --mono:     'JetBrains Mono', monospace;
+      --body:     'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* ─── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 56px;
+      background: rgba(13,15,20,.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; flex: 1;
+    }
+    .nav-icon {
+      width: 30px; height: 30px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-weight: 700; font-size: 11px; color: #fff;
+    }
+    .nav-name {
+      font-family: var(--mono); font-size: 14px; font-weight: 700;
+      color: var(--text); letter-spacing: -.3px;
+    }
+    .nav-name span { color: var(--accent2); }
+
+    .nav-links {
+      display: flex; gap: 20px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; color: var(--muted);
+      text-decoration: none; font-family: var(--mono);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+
+    @media (max-width: 560px) {
+      .nav-links { display: none; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────── */
+    .hero {
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* background floating chars */
+    .bg-chars {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .bg-char {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      opacity: 0;
+      animation: floatChar linear infinite;
+      user-select: none;
+    }
+    @keyframes floatChar {
+      0%   { opacity: 0;    transform: translateY(0)   rotate(0deg); }
+      10%  { opacity: .07; }
+      90%  { opacity: .07; }
+      100% { opacity: 0;    transform: translateY(-120vh) rotate(20deg); }
+    }
+
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 640px;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--accent2); letter-spacing: 2px; text-transform: uppercase;
+      background: rgba(108,99,255,.1);
+      border: 1px solid rgba(108,99,255,.25);
+      padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green2);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: .3; }
+    }
+
+    .hero h1 {
+      font-family: var(--mono);
+      font-size: clamp(28px, 6vw, 52px);
+      font-weight: 700; line-height: 1.15;
+      color: var(--text); margin-bottom: 20px;
+      letter-spacing: -.5px;
+    }
+    .hero h1 .accent { color: var(--accent2); }
+    .hero h1 .under  {
+      position: relative; display: inline-block;
+    }
+    .hero h1 .under::after {
+      content: '';
+      position: absolute; left: 0; bottom: -2px; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+    }
+
+    /* terminal typing block */
+    .terminal {
+      background: #080A0F;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      text-align: left;
+      margin: 28px auto;
+      max-width: 420px;
+    }
+    .terminal-bar {
+      display: flex; gap: 6px; margin-bottom: 12px;
+    }
+    .t-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .t-dot.r { background: #FF5F57; }
+    .t-dot.y { background: #FFBD2E; }
+    .t-dot.g { background: #28C840; }
+
+    .terminal-line {
+      font-family: var(--mono); font-size: 13px;
+      line-height: 1.8; color: var(--muted);
+    }
+    .terminal-line .prompt { color: var(--accent); }
+    .terminal-line .cmd    { color: var(--text); }
+    .terminal-line .out    { color: var(--green2); }
+    #typed-text { color: var(--text); }
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 14px;
+      background: var(--accent2);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: cursorBlink .8s infinite;
+    }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    .hero-sub {
+      font-size: 15px; color: var(--muted);
+      max-width: 480px; margin: 0 auto 36px;
+      line-height: 1.75;
+    }
+
+    .hero-ctas {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 13px; font-weight: 600;
+      padding: 12px 22px; border-radius: 10px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .btn:hover   { transform: translateY(-2px); }
+    .btn:active  { transform: translateY(0); }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 24px rgba(108,99,255,.35);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 32px rgba(108,99,255,.5); }
+    .btn-ghost {
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent2); }
+    .btn-wa {
+      background: var(--green); color: #fff;
+      box-shadow: 0 4px 20px rgba(37,211,102,.3);
+    }
+    .btn-wa:hover { box-shadow: 0 6px 28px rgba(37,211,102,.5); }
+
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      animation: fadeUpDown 2s ease-in-out infinite;
+      z-index: 1;
+    }
+    .scroll-arrow { font-size: 14px; }
+    @keyframes fadeUpDown {
+      0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+      50%       { opacity: .9; transform: translateX(-50%) translateY(5px); }
+    }
+
+    /* ─── SECTIONS ───────────────────────────────────── */
+    section { scroll-margin-top: 64px; }
+    .section-wrap { max-width: 860px; margin: 0 auto; padding: 80px 24px; }
+
+    .sec-eyebrow {
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      font-family: var(--mono); font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 700; color: var(--text);
+      margin-bottom: 12px;
+    }
+    .sec-title span { color: var(--accent2); }
+    .sec-sub {
+      font-size: 14px; color: var(--muted);
+      max-width: 520px; margin-bottom: 44px;
+      line-height: 1.75;
+    }
+
+    /* divider */
+    .divider {
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* ─── SOBRE ──────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      transition: border-color .2s;
+    }
+    .about-card:hover { border-color: var(--accent); }
+    .about-card-icon { font-size: 24px; margin-bottom: 10px; }
+    .about-card-title {
+      font-family: var(--mono); font-size: 14px; font-weight: 600;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .about-card-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ─── TUTORIAIS ──────────────────────────────────── */
+    #tutoriais { background: var(--surface); }
+    .tutorials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .tut-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      text-decoration: none;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: border-color .2s, transform .2s;
+    }
+    .tut-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-3px);
+    }
+    .tut-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px;
+      background: rgba(108,99,255,.12);
+      color: var(--accent2);
+      align-self: flex-start;
+    }
+    .tut-title {
+      font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.45;
+    }
+    .tut-desc { font-size: 12px; color: var(--muted); line-height: 1.6; flex: 1; }
+    .tut-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    .tut-arrow { color: var(--accent2); }
+
+    /* ─── WHATSAPP CTA ───────────────────────────────── */
+    .wa-section {
+      max-width: 860px; margin: 0 auto; padding: 80px 24px;
+    }
+    .wa-card {
+      background: linear-gradient(135deg, #0a1f14 0%, #0d1a14 100%);
+      border: 1px solid rgba(37,211,102,.2);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .wa-card::before {
+      content: '';
+      position: absolute; top: -40%; right: -10%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(37,211,102,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .wa-icon {
+      font-size: 52px; margin-bottom: 16px;
+      display: block;
+      animation: waPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes waPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.07); }
+    }
+    .wa-title {
+      font-family: var(--mono); font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700; color: var(--text);
+      margin-bottom: 12px;
+    }
+    .wa-title span { color: var(--green); }
+    .wa-sub {
+      font-size: 14px; color: var(--muted);
+      max-width: 460px; margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+    .wa-perks {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin-bottom: 32px;
+    }
+    .wa-perk {
+      font-family: var(--mono); font-size: 11px;
+      padding: 5px 14px; border-radius: 20px;
+      background: rgba(37,211,102,.08);
+      border: 1px solid rgba(37,211,102,.2);
+      color: #7EEECF;
+    }
+    .btn-wa-lg {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 15px; font-weight: 700;
+      padding: 16px 36px; border-radius: 12px;
+      background: var(--green); color: #fff;
+      text-decoration: none;
+      box-shadow: 0 6px 32px rgba(37,211,102,.35);
+      transition: transform .15s, box-shadow .2s;
+    }
+    .btn-wa-lg:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(37,211,102,.5);
+    }
+    .wa-note {
+      font-size: 11px; color: var(--muted);
+      margin-top: 14px; font-family: var(--mono);
+    }
+
+    @media (max-width: 560px) {
+      .wa-card { padding: 36px 22px; }
+    }
+
+    /* ─── REDES ──────────────────────────────────────── */
+    #redes { background: var(--surface); }
+    .social-grid {
+      display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .social-card {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      text-decoration: none;
+      flex: 1; min-width: 200px;
+      transition: border-color .2s, transform .2s;
+    }
+    .social-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-2px);
+    }
+    .social-icon-wrap {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .social-info-name {
+      font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text);
+    }
+    .social-info-handle {
+      font-size: 12px; color: var(--muted);
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .footer-inner { max-width: 860px; margin: 0 auto; }
+    .footer-logo {
+      font-family: var(--mono); font-size: 16px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .footer-logo span { color: var(--accent2); }
+    .footer-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .footer-links {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      justify-content: center; list-style: none;
+    }
+    .footer-links a {
+      font-family: var(--mono); font-size: 12px;
+      color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--accent2); }
+    .footer-copy {
+      font-size: 11px; color: var(--muted); margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-icon">AI</div>
+    <div class="nav-name">Think<span>AI</span> Pro</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#tutoriais">Tutoriais</a></li>
+    <li><a href="#comunidade">Comunidade</a></li>
+    <li><a href="#redes">Redes</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="hero">
+  <div class="bg-chars" id="bg-chars"></div>
+
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      Canal ativo · Novos tutoriais toda semana
+    </div>
+
+    <h1>
+      <span class="accent">IA local</span> no seu bolso.<br/>
+      Tecnologia de <span class="under">verdade</span>.
+    </h1>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="t-dot r"></div>
+        <div class="t-dot y"></div>
+        <div class="t-dot g"></div>
+      </div>
+      <div class="terminal-line">
+        <span class="prompt">$ </span><span id="typed-text"></span><span class="cursor"></span>
+      </div>
+      <div class="terminal-line" id="term-out" style="display:none">
+        <span class="out">✓ Pronto. Agora é só aprender.</span>
+      </div>
+    </div>
+
+    <p class="hero-sub">
+      Tutoriais práticos de IA local, Termux, automação e tecnologia acessível — tudo rodando no seu Android, sem depender de nuvem, sem mensalidade, sem complicação.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="#tutoriais" class="btn btn-primary">📚 Ver tutoriais</a>
+      <a href="#comunidade" class="btn btn-wa">💬 Entrar no grupo</a>
+      <a href="#" class="btn btn-ghost" id="yt-hero-btn">▶ Canal no YouTube</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span class="scroll-arrow">↓</span>
+    <span>explorar</span>
+  </div>
+</section>
+
+<!-- ══════════ SOBRE ══════════ -->
+<section id="sobre">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">Sobre o canal</div>
+    <h2 class="sec-title">Tecnologia acessível<br/><span>para quem quer aprender de verdade</span></h2>
+    <p class="sec-sub">O ThinkAI Pro nasceu pra provar que IA não precisa de supercomputador, assinatura cara ou conhecimento avançado. Se você tem um Android, já tem tudo que precisa.</p>
+
+    <div class="about-grid" id="about-grid"></div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════ TUTORIAIS ══════════ -->
+<section id="tutoriais">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">Tutoriais</div>
+    <h2 class="sec-title">Do zero ao <span>funcionando</span></h2>
+    <p class="sec-sub">Guias passo a passo com código pronto pra copiar. Sem enrolação, direto ao ponto.</p>
+
+    <div class="tutorials-grid" id="tutorials-grid"></div>
+  </div>
+</section>
+
+<!-- ══════════ WHATSAPP CTA ══════════ -->
+<section id="comunidade">
+  <div class="wa-section">
+    <div class="wa-card">
+      <span class="wa-icon">💬</span>
+      <h2 class="wa-title">Entre no grupo <span>ThinkAI Pro</span></h2>
+      <p class="wa-sub">
+        Promoções diárias, alertas de tutoriais novos, dicas exclusivas e uma comunidade de pessoas que curtem tecnologia do jeito certo — sem hype, com conteúdo.
+      </p>
+      <div class="wa-perks" id="wa-perks"></div>
+      <a class="btn-wa-lg" id="wa-link" href="#" target="_blank" rel="noopener">
+        <span>📲</span> Entrar no grupo grátis
+      </a>
+      <p class="wa-note">🔒 Grupo gratuito · Sem spam · Saída a qualquer momento</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ REDES ══════════ -->
+<section id="redes">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">Redes sociais</div>
+    <h2 class="sec-title">Me encontre <span>em todo lugar</span></h2>
+    <p class="sec-sub">Siga para não perder nada — conteúdo extra nas redes quase todo dia.</p>
+    <div class="social-grid" id="social-grid"></div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Think<span>AI</span> Pro</div>
+    <p class="footer-sub">IA local · Termux · Automação · Android</p>
+    <ul class="footer-links" id="footer-links"></ul>
+    <p class="footer-copy" id="footer-copy"></p>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     ✏️  EDITE AQUI — todos os dados do canal ficam neste bloco
+════════════════════════════════════════════════════════════ -->
+<script>
+const CONFIG = {
+
+  /* ── Identidade ─────────────────────────────── */
+  channelName: "ThinkAI Pro",
+  tagline:     "IA local, Termux e automação — no seu Android.",
+  year:        new Date().getFullYear(),
+
+  /* ── Link do WhatsApp ────────────────────────
+     Substitua pelo link do seu grupo:
+     https://chat.whatsapp.com/XXXXXXXXXXXXXXXXXX  */
+  whatsappLink: "https://chat.whatsapp.com/SEU-LINK-AQUI",
+
+  /* ── Redes sociais ───────────────────────────
+     Preencha as URLs. Deixe "" para ocultar.     */
+  social: [
+    { name: "YouTube",   handle: "@ThinkAIPro",  url: "https://youtube.com/@ThinkAIPro",   icon: "▶", bg: "#1a0a0a", color: "#FF4444" },
+    { name: "Instagram", handle: "@thinkaipro",  url: "https://instagram.com/thinkaipro",  icon: "📸", bg: "#1a0d14", color: "#E1306C" },
+    { name: "GitHub",    handle: "thinkaipro",   url: "https://github.com/thinkaipro",     icon: "⌥", bg: "#0d0f14", color: "#A78BFA" },
+    { name: "TikTok",    handle: "@thinkaipro",  url: "https://tiktok.com/@thinkaipro",   icon: "♪", bg: "#0a1414", color: "#4ECCA3" },
+  ],
+
+  /* ── Cards "Sobre" ───────────────────────────  */
+  about: [
+    { icon: "🤖", title: "IA 100% local",      text: "Ollama, LLaMA, Mistral e muito mais rodando direto no seu Android, sem mandar dados pra nenhum servidor." },
+    { icon: "📱", title: "Termux na prática",   text: "Do zero ao servidor funcional. Cada tutorial tem o código pronto — é só copiar e rodar." },
+    { icon: "⚡", title: "Projetos reais",      text: "Nada de exemplos inúteis. Aqui você constrói coisas que realmente usa no dia a dia." },
+    { icon: "🆓", title: "Sempre gratuito",     text: "Todo conteúdo do canal é gratuito. A única mensalidade que você paga é a do seu plano de internet." },
+  ],
+
+  /* ── Tutoriais ───────────────────────────────
+     Adicione/remova objetos nessa lista.
+     url: link pro GitHub, YouTube ou arquivo HTML local */
+  tutorials: [
+    {
+      tag: "IA Local",
+      title: "Como rodar uma IA local no Android com Termux + Ollama",
+      desc:  "Instale o Ollama no Termux, baixe o LLaMA 3 e converse com uma IA sem internet e sem pagar nada.",
+      time:  "15 min",
+      url:   "#",
+    },
+    {
+      tag: "Web UI",
+      title: "Chat local estilo ChatGPT — interface no navegador",
+      desc:  "Crie uma mini web UI em HTML puro que se conecta ao Ollama via fetch. Streaming em tempo real.",
+      time:  "10 min",
+      url:   "ollama-chat.html",
+    },
+    {
+      tag: "Servidor",
+      title: "Servidor de músicas local com Termux + Flask",
+      desc:  "Transforme seu Android num servidor de streaming pessoal. MP3, FLAC, OGG — acessível na sua rede Wi-Fi.",
+      time:  "10 min",
+      url:   "tutorial-servidor-musicas.html",
+    },
+    {
+      tag: "Em breve",
+      title: "VPN caseira no celular com WireGuard + Termux",
+      desc:  "Monte sua própria VPN gratuita usando apenas o Android e o Termux. Sem aplicativo pago, sem serviço terceiro.",
+      time:  "Em breve",
+      url:   "#",
+    },
+    {
+      tag: "Em breve",
+      title: "Bot do Telegram com IA local respondendo mensagens",
+      desc:  "Integre o Ollama com a API do Telegram e tenha um bot privado com IA rodando 24h no seu celular.",
+      time:  "Em breve",
+      url:   "#",
+    },
+    {
+      tag: "Em breve",
+      title: "Servidor de arquivos pessoal — seu Google Drive local",
+      desc:  "Monte um servidor de arquivos acessível de qualquer lugar da sua casa usando o Termux e o Nextcloud.",
+      time:  "Em breve",
+      url:   "#",
+    },
+  ],
+
+  /* ── Perks do WhatsApp ───────────────────────  */
+  waPerks: [
+    "🔥 Promoções todo dia",
+    "📚 Tutoriais em primeira mão",
+    "💡 Dicas exclusivas",
+    "🤝 Comunidade ativa",
+    "⚡ Alertas de novidades",
+  ],
+
+};
+/* ══════════════════════════════════════════════
+   ⛔ Não edite abaixo desta linha
+══════════════════════════════════════════════ */
+
+/* ── Floating bg chars ─── */
+(function() {
+  const chars = ['01','10','{}','[]','//','<>','&&','||','AI','>>','<<','::','fn','λ'];
+  const wrap  = document.getElementById('bg-chars');
+  for (let i = 0; i < 28; i++) {
+    const el = document.createElement('span');
+    el.className = 'bg-char';
+    el.textContent = chars[Math.floor(Math.random() * chars.length)];
+    el.style.left     = Math.random() * 100 + '%';
+    el.style.top      = (60 + Math.random() * 60) + 'vh';
+    el.style.fontSize = (10 + Math.random() * 8) + 'px';
+    const dur  = 12 + Math.random() * 18;
+    const del  = Math.random() * 15;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay   = del + 's';
+    wrap.appendChild(el);
+  }
+})();
+
+/* ── Terminal typing ─── */
+(function() {
+  const phrases = [
+    'ollama run llama3',
+    'python server.py',
+    'pkg install python -y',
+    'tmux new -s ia',
+    'curl localhost:11434',
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const el  = document.getElementById('typed-text');
+  const out = document.getElementById('term-out');
+
+  function tick() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) {
+        out.style.display = 'block';
+        setTimeout(() => { deleting = true; out.style.display = 'none'; tick(); }, 1800);
+        return;
+      }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) {
+        deleting = false;
+        pi = (pi + 1) % phrases.length;
+      }
+    }
+    setTimeout(tick, deleting ? 40 : 90);
+  }
+  tick();
+})();
+
+/* ── About cards ─── */
+(function() {
+  const grid = document.getElementById('about-grid');
+  CONFIG.about.forEach(c => {
+    grid.innerHTML += `
+      <div class="about-card">
+        <div class="about-card-icon">${c.icon}</div>
+        <div class="about-card-title">${c.title}</div>
+        <div class="about-card-text">${c.text}</div>
+      </div>`;
+  });
+})();
+
+/* ── Tutorials grid ─── */
+(function() {
+  const grid = document.getElementById('tutorials-grid');
+  CONFIG.tutorials.forEach(t => {
+    const disabled = t.url === '#';
+    grid.innerHTML += `
+      <a class="tut-card" href="${t.url}" ${disabled ? 'style="cursor:default;opacity:.65"' : ''}>
+        <span class="tut-tag">${t.tag}</span>
+        <div class="tut-title">${t.title}</div>
+        <div class="tut-desc">${t.desc}</div>
+        <div class="tut-footer">
+          <span>⏱ ${t.time}</span>
+          <span class="tut-arrow">${disabled ? '' : '→'}</span>
+        </div>
+      </a>`;
+  });
+})();
+
+/* ── WhatsApp ─── */
+(function() {
+  document.getElementById('wa-link').href = CONFIG.whatsappLink;
+  const perks = document.getElementById('wa-perks');
+  CONFIG.waPerks.forEach(p => {
+    perks.innerHTML += `<span class="wa-perk">${p}</span>`;
+  });
+})();
+
+/* ── Social grid ─── */
+(function() {
+  const grid = document.getElementById('social-grid');
+  CONFIG.social.filter(s => s.url).forEach(s => {
+    grid.innerHTML += `
+      <a class="social-card" href="${s.url}" target="_blank" rel="noopener">
+        <div class="social-icon-wrap" style="background:${s.bg};color:${s.color}">${s.icon}</div>
+        <div>
+          <div class="social-info-name">${s.name}</div>
+          <div class="social-info-handle">${s.handle}</div>
+        </div>
+      </a>`;
+  });
+})();
+
+/* ── Footer & YT hero btn ─── */
+(function() {
+  const yt = CONFIG.social.find(s => s.name === 'YouTube');
+  if (yt) document.getElementById('yt-hero-btn').href = yt.url;
+
+  const links = document.getElementById('footer-links');
+  CONFIG.social.forEach(s => {
+    links.innerHTML += `<li><a href="${s.url}" target="_blank" rel="noopener">${s.name}</a></li>`;
+  });
+  links.innerHTML += `<li><a href="${CONFIG.whatsappLink}" target="_blank" rel="noopener">WhatsApp</a></li>`;
+
+  document.getElementById('footer-copy').textContent =
+    `© ${CONFIG.year} ${CONFIG.channelName} — Feito com 💜 e muito Termux`;
+})();
+</script>
+</body>
+</html>
