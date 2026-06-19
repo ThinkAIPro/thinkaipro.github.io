@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cursos Recomendados — ThinkAI Pro</title>
+  <meta name="description" content="Os melhores cursos de IA, Android, Linux e tecnologia selecionados pelo ThinkAI Pro." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS (idênticos à página principal) ────────────── */
+    :root {
+      --bg:        #0A0D14;
+      --surface:   #111520;
+      --border:    #1E2535;
+      --accent:    #00E5A0;
+      --accent2:   #7B5CF6;
+      --text:      #E8EAF0;
+      --muted:     #6B7491;
+      --whatsapp:  #25D366;
+      --hotmart:   #ED1650;
+      --kiwify:    #00B4D8;
+      --eduzz:     #FF6B00;
+      --font-disp: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-disp);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* noise */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      background: rgba(10,13,20,0.85);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
+    }
+    .logo-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #000;
+    }
+    .nav-links { display: flex; gap: 32px; font-size: 0.9rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      background: var(--whatsapp); color: #000; font-weight: 700;
+      padding: 9px 20px; border-radius: 8px; font-size: 0.875rem;
+      transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO COMPACTO ───────────────────────────────────── */
+    .page-hero {
+      padding: 72px 0 56px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--accent));
+      animation: scan 3s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0%,100% { opacity:0; transform: translateX(-50%) scaleY(.3); }
+      50%      { opacity:1; transform: translateX(-50%) scaleY(1); }
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(123,92,246,0.1); border: 1px solid rgba(123,92,246,0.3);
+      color: var(--accent2); border-radius: 100px; padding: 6px 16px;
+      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent2); animation: blink 1.4s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    .page-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700; letter-spacing: -.04em; line-height: 1.1; margin-bottom: 16px;
+    }
+    .page-hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .page-hero p { color: var(--muted); max-width: 520px; margin: 0 auto; font-size: 1.05rem; line-height: 1.7; }
+
+    /* ── FILTROS ─────────────────────────────────────────── */
+    .filters {
+      display: flex; align-items: center; gap: 10px;
+      padding: 32px 0 40px; flex-wrap: wrap;
+    }
+    .filter-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-right: 4px; }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 100px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); font-family: var(--font-disp);
+      font-size: 0.85rem; cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
+
+    /* ── MURAL DE CURSOS ─────────────────────────────────── */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 24px;
+      padding-bottom: 96px;
+    }
+
+    .course-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+      position: relative;
+    }
+    .course-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent2);
+      box-shadow: 0 16px 48px rgba(123,92,246,0.15);
+    }
+
+    /* badge de destaque */
+    .badge-hot {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      background: var(--accent); color: #000; font-family: var(--font-mono);
+      font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .badge-new {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      background: var(--accent2); color: #fff; font-family: var(--font-mono);
+      font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .badge-free {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      background: var(--whatsapp); color: #000; font-family: var(--font-mono);
+      font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    /* thumbnail */
+    .course-thumb {
+      aspect-ratio: 16/9; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .thumb-bg {
+      position: absolute; inset: 0;
+    }
+    /* Cada categoria tem um gradiente distinto */
+    .grad-ai    { background: linear-gradient(135deg, #0d1b2a 0%, #1a0a2e 100%); }
+    .grad-android { background: linear-gradient(135deg, #0a1f0d 0%, #0d2e1a 100%); }
+    .grad-linux { background: linear-gradient(135deg, #1a1400 0%, #2e2000 100%); }
+    .grad-eletro { background: linear-gradient(135deg, #0a0d2e 0%, #1a1a2e 100%); }
+    .grad-mobile { background: linear-gradient(135deg, #2e0a1a 0%, #1a0a2e 100%); }
+
+    .thumb-icon { position: relative; z-index: 1; font-size: 3.2rem; filter: drop-shadow(0 0 20px rgba(255,255,255,.15)); }
+
+    /* plataforma badge canto direito */
+    .platform-badge {
+      position: absolute; bottom: 12px; right: 12px; z-index: 2;
+      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: .06em;
+    }
+    .plat-hotmart  { background: var(--hotmart); color: #fff; }
+    .plat-kiwify   { background: var(--kiwify);  color: #000; }
+    .plat-eduzz    { background: var(--eduzz);   color: #fff; }
+    .plat-udemy    { background: #A435F0;         color: #fff; }
+    .plat-gratuito { background: var(--whatsapp); color: #000; }
+
+    /* corpo */
+    .course-body { padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+    .course-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ctag {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--accent); background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.2); padding: 2px 9px; border-radius: 4px;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .ctag.purple {
+      color: var(--accent2); background: rgba(123,92,246,0.08);
+      border-color: rgba(123,92,246,0.2);
+    }
+
+    .course-title {
+      font-size: 1rem; font-weight: 700; line-height: 1.4; color: var(--text);
+    }
+    .course-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    .course-meta {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 0.8rem; color: var(--muted); margin-top: auto; padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .meta-item { display: flex; align-items: center; gap: 5px; }
+
+    .course-footer { padding: 0 24px 24px; }
+    .price-row {
+      display: flex; align-items: flex-end; gap: 10px; margin-bottom: 14px;
+    }
+    .price-old {
+      font-size: 0.85rem; color: var(--muted);
+      text-decoration: line-through;
+    }
+    .price-new {
+      font-size: 1.5rem; font-weight: 700; font-family: var(--font-mono);
+      color: var(--accent); letter-spacing: -.03em;
+    }
+    .price-free {
+      font-size: 1.4rem; font-weight: 700; font-family: var(--font-mono);
+      color: var(--whatsapp);
+    }
+
+    .btn-course {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px;
+      border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+      background: var(--accent2); color: #fff;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-course:hover { opacity: .88; transform: translateY(-2px); }
+    .btn-course.green { background: var(--accent); color: #000; }
+
+    /* ── AVISO AFILIADO ──────────────────────────────────── */
+    .afiliado-notice {
+      background: rgba(123,92,246,0.06);
+      border: 1px solid rgba(123,92,246,0.2);
+      border-radius: 12px; padding: 16px 24px;
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 40px; font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+    }
+    .notice-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0; text-align: center;
+      color: var(--muted); font-size: 0.85rem; position: relative; z-index: 1;
+    }
+    footer a { color: var(--accent); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .courses-grid { grid-template-columns: 1fr; }
+      .page-hero { padding: 56px 0 40px; }
+    }
+
+    /* filtro JS */
+    .course-card[data-hidden="true"] { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">T▸</div>
+      ThinkAI Pro
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="index.html#topicos">Tópicos</a>
+      <a href="cursos.html" class="active">Cursos</a>
+      <a href="index.html#comunidade">Comunidade</a>
+    </div>
+    <!-- ✏️ EDITAR: link do seu grupo -->
+    <a class="nav-cta" href="https://chat.whatsapp.com/SEU_LINK_CONVITE" target="_blank" rel="noopener">
+      Grupo WhatsApp
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Selecionados pelo ThinkAI Pro
+    </div>
+    <h1>Mural de <em>Cursos</em></h1>
+    <p>Os melhores cursos de tecnologia, curados e testados. Clique e vá direto para a página oficial com o melhor preço.</p>
+  </div>
+</section>
+
+<!-- ── CONTEÚDO ───────────────────────────────────────────── -->
+<div class="container">
+
+  <!-- Filtros -->
+  <div class="filters">
+    <span class="filter-label">Filtrar:</span>
+    <button class="filter-btn active" data-filter="todos" onclick="filtrar(this)">Todos</button>
+    <button class="filter-btn" data-filter="ia" onclick="filtrar(this)">IA</button>
+    <button class="filter-btn" data-filter="android" onclick="filtrar(this)">Android</button>
+    <button class="filter-btn" data-filter="linux" onclick="filtrar(this)">Linux</button>
+    <button class="filter-btn" data-filter="eletronicos" onclick="filtrar(this)">Eletrônicos</button>
+    <button class="filter-btn" data-filter="mobile" onclick="filtrar(this)">Dispositivos Móveis</button>
+  </div>
+
+  <!-- Aviso de afiliado -->
+  <div class="afiliado-notice">
+    <span class="notice-icon">ℹ️</span>
+    <span>
+      <strong style="color: var(--text);">Transparência:</strong>
+      Alguns links desta página são de afiliado. Ao comprar por aqui, você apoia o canal ThinkAI Pro
+      sem pagar nada a mais — o preço é exatamente o mesmo da plataforma.
+    </span>
+  </div>
+
+  <!-- ── GRID DE CURSOS ──────────────────────────────────── -->
+  <div class="courses-grid">
+
+    <!--
+    ╔══════════════════════════════════════════════════════╗
+    ║  ✏️ COMO ADICIONAR UM CURSO NOVO:                   ║
+    ║  1. Copie um bloco <article> abaixo                 ║
+    ║  2. Troque: href, título, descrição, preço, emoji   ║
+    ║  3. data-cat="ia|android|linux|eletronicos|mobile"  ║
+    ║  4. platform-badge: plat-hotmart / plat-kiwify /   ║
+    ║     plat-eduzz / plat-udemy / plat-gratuito         ║
+    ╚══════════════════════════════════════════════════════╝
+    -->
+
+    <!-- ── CURSO 1 ── IA ── HOTMART ─────────────────────── -->
+    <article class="course-card" data-cat="ia">
+      <span class="badge-hot">🔥 Mais vendido</span>
+      <div class="course-thumb">
+        <div class="thumb-bg grad-ai"></div>
+        <div class="thumb-icon">🤖</div>
+        <span class="platform-badge plat-hotmart">Hotmart</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tags">
+          <span class="ctag">IA</span>
+          <span class="ctag purple">ChatGPT</span>
+        </div>
+        <!-- ✏️ EDITAR: título real do curso -->
+        <div class="course-title">Inteligência Artificial na Prática — Do Zero ao Avançado</div>
+        <div class="course-desc">Domine as principais ferramentas de IA para automatizar tarefas, criar conteúdo e ganhar produtividade de verdade.</div>
+        <div class="course-meta">
+          <span class="meta-item">⏱ 40h de conteúdo</span>
+          <span class="meta-item">🏆 Certificado</span>
+          <span class="meta-item">📱 Acesso vitalício</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <div class="price-row">
+          <span class="price-old">R$ 297</span>
+          <span class="price-new">R$ 97</span>
+        </div>
+        <!-- ✏️ EDITAR: link de afiliado real da Hotmart -->
+        <a class="btn-course" href="https://hotmart.com/product/SEU_LINK_AFILIADO" target="_blank" rel="noopener sponsored">
+          Ver curso na Hotmart →
+        </a>
+      </div>
+    </article>
+
+    <!-- ── CURSO 2 ── ANDROID ── HOTMART ─────────────────── -->
+    <article class="course-card" data-cat="android">
+      <span class="badge-new">✨ Novo</span>
+      <div class="course-thumb">
+        <div class="thumb-bg grad-android"></div>
+        <div class="thumb-icon">🤖</div>
+        <span class="platform-badge plat-hotmart">Hotmart</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tags">
+          <span class="ctag">Android</span>
+          <span class="ctag purple">Root & ROM</span>
+        </div>
+        <div class="course-title">Android Avançado — Root, ROMs e Personalização Total</div>
+        <div class="course-desc">Aprenda a rootear qualquer device, instalar ROMs customizadas e tirar o máximo do seu Android.</div>
+        <div class="course-meta">
+          <span class="meta-item">⏱ 22h de conteúdo</span>
+          <span class="meta-item">🏆 Certificado</span>
+          <span class="meta-item">📱 Acesso vitalício</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <div class="price-row">
+          <span class="price-old">R$ 197</span>
+          <span class="price-new">R$ 67</span>
+        </div>
+        <!-- ✏️ EDITAR -->
+        <a class="btn-course" href="https://hotmart.com/product/SEU_LINK_AFILIADO_2" target="_blank" rel="noopener sponsored">
+          Ver curso na Hotmart →
+        </a>
+      </div>
+    </article>
+
+    <!-- ── CURSO 3 ── LINUX ── KIWIFY ─────────────────────── -->
+    <article class="course-card" data-cat="linux">
+      <div class="course-thumb">
+        <div class="thumb-bg grad-linux"></div>
+        <div class="thumb-icon">🐧</div>
+        <span class="platform-badge plat-kiwify">Kiwify</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tags">
+          <span class="ctag">Linux</span>
+          <span class="ctag purple">Terminal</span>
+        </div>
+        <div class="course-title">Linux do Zero — Terminal, Servidor e Administração</div>
+        <div class="course-desc">Do primeiro comando até configurar servidores. Aprenda o que toda empresa busca em um profissional de TI.</div>
+        <div class="course-meta">
+          <span class="meta-item">⏱ 35h de conteúdo</span>
+          <span class="meta-item">🏆 Certificado</span>
+          <span class="meta-item">📱 Acesso vitalício</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <div class="price-row">
+          <span class="price-old">R$ 247</span>
+          <span class="price-new">R$ 87</span>
+        </div>
+        <!-- ✏️ EDITAR -->
+        <a class="btn-course" href="https://kiwify.app/SEU_LINK_AFILIADO" target="_blank" rel="noopener sponsored">
+          Ver curso na Kiwify →
+        </a>
+      </div>
+    </article>
+
+    <!-- ── CURSO 4 ── ELETRÔNICOS ── HOTMART ──────────────── -->
+    <article class="course-card" data-cat="eletronicos">
+      <div class="course-thumb">
+        <div class="thumb-bg grad-eletro"></div>
+        <div class="thumb-icon">🔌</div>
+        <span class="platform-badge plat-hotmart">Hotmart</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tags">
+          <span class="ctag">Eletrônicos</span>
+          <span class="ctag purple">Arduino</span>
+        </div>
+        <div class="course-title">Arduino & Raspberry Pi — Projetos do Zero</div>
+        <div class="course-desc">Monte projetos reais com Arduino e Raspberry Pi: automação residencial, robótica e IoT do início ao fim.</div>
+        <div class="course-meta">
+          <span class="meta-item">⏱ 28h de conteúdo</span>
+          <span class="meta-item">🏆 Certificado</span>
+          <span class="meta-item">🔨 Projetos práticos</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <div class="price-row">
+          <span class="price-old">R$ 227</span>
+          <span class="price-new">R$ 79</span>
+        </div>
+        <!-- ✏️ EDITAR -->
+        <a class="btn-course" href="https://hotmart.com/product/SEU_LINK_AFILIADO_3" target="_blank" rel="noopener sponsored">
+          Ver curso na Hotmart →
+        </a>
+      </div>
+    </article>
+
+    <!-- ── CURSO 5 ── MOBILE ── KIWIFY ────────────────────── -->
+    <article class="course-card" data-cat="mobile">
+      <div class="course-thumb">
+        <div class="thumb-bg grad-mobile"></div>
+        <div class="thumb-icon">📱</div>
+        <span class="platform-badge plat-kiwify">Kiwify</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tags">
+          <span class="ctag">Mobile</span>
+          <span class="ctag purple">iOS & Android</span>
+        </div>
+        <div class="course-title">Masterclass de Smartphones — Tudo que Ninguém te Contou</div>
+        <div class="course-desc">Configurações avançadas, segurança, privacidade e performance máxima nos principais smartphones do mercado.</div>
+        <div class="course-meta">
+          <span class="meta-item">⏱ 18h de conteúdo</span>
+          <span class="meta-item">🏆 Certificado</span>
+          <span class="meta-item">📱 Acesso vitalício</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <div class="price-row">
+          <span class="price-old">R$ 177</span>
+          <span class="price-new">R$ 57</span>
+        </div>
+        <!-- ✏️ EDITAR -->
+        <a class="btn-course" href="https://kiwify.app/SEU_LINK_AFILIADO_2" target="_blank" rel="noopener sponsored">
+          Ver curso na Kiwify →
+        </a>
+      </div>
+    </article>
+
+    <!-- ── CURSO 6 ── IA ── GRATUITO ──────────────────────── -->
+    <article class="course-card" data-cat="ia">
+      <span class="badge-free">Grátis</span>
+      <div class="course-thumb">
+        <div class="thumb-bg grad-ai"></div>
+        <div class="thumb-icon">✨</div>
+        <span class="platform-badge plat-gratuito">Gratuito</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tags">
+          <span class="ctag">IA</span>
+          <span class="ctag purple">Iniciante</span>
+        </div>
+        <div class="course-title">Introdução à IA — Primeiros Passos com ChatGPT e Gemini</div>
+        <div class="course-desc">Para quem nunca usou IA antes. Aprenda o essencial em menos de 2 horas de forma totalmente gratuita.</div>
+        <div class="course-meta">
+          <span class="meta-item">⏱ 2h de conteúdo</span>
+          <span class="meta-item">👶 Iniciante</span>
+          <span class="meta-item">🎯 Sem pré-requisito</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <div class="price-row">
+          <span class="price-free">Gratuito 🎁</span>
+        </div>
+        <!-- ✏️ EDITAR: link do seu canal/grupo/Drive onde disponibiliza o conteúdo grátis -->
+        <a class="btn-course green" href="https://chat.whatsapp.com/SEU_LINK_GRUPO" target="_blank" rel="noopener">
+          Acessar gratuitamente →
+        </a>
+      </div>
+    </article>
+
+    <!-- ── ADICIONE MAIS CURSOS AQUI ────────────────────────
+    Copie e cole um dos blocos <article> acima e edite:
+    • data-cat="ia|android|linux|eletronicos|mobile"
+    • href do botão (link de afiliado)
+    • Título, descrição, preço, duração
+    • Emoji do thumb e classe grad-*
+    • badge-hot / badge-new / badge-free (opcional)
+    ─────────────────────────────────────────────────────── -->
+
+  </div><!-- /courses-grid -->
+</div><!-- /container -->
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <p>
+      © 2025 <strong>ThinkAI Pro</strong> — Tecnologia que você entende. ·
+      <a href="index.html">Página principal</a> ·
+      <!-- ✏️ EDITAR -->
+      <a href="https://whatsapp.com/channel/SEU_CANAL" target="_blank" rel="noopener">Canal no WhatsApp</a>
+    </p>
+    <p style="margin-top: 8px; font-size: 0.78rem;">
+      Links com ✦ são de afiliado — você não paga nada a mais por isso.
+    </p>
+  </div>
+</footer>
+
+<!-- ── FILTRO JS ──────────────────────────────────────────── -->
+<script>
+  function filtrar(btn) {
+    // atualizar botão ativo
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filtro = btn.dataset.filter;
+    document.querySelectorAll('.course-card').forEach(card => {
+      if (filtro === 'todos' || card.dataset.cat === filtro) {
+        card.removeAttribute('data-hidden');
+      } else {
+        card.setAttribute('data-hidden', 'true');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
